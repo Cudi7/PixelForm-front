@@ -24,13 +24,17 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { User } from "../../common/interfaces/user.interface";
 import { getComparator, Order } from "../../common/tableHelpers";
-
+import { useDialog } from "../../contexts/dialog.context";
+import { Chip } from "@mui/material";
 function createData(
   _id: string,
   nombre: string,
   email: string,
   role: string,
-  password: string
+  password: string,
+  apellido1?: string,
+  apellido2?: string,
+  telefono?: string
 ): User {
   return {
     _id,
@@ -38,6 +42,9 @@ function createData(
     email,
     role,
     password,
+    apellido1,
+    apellido2,
+    telefono,
   };
 }
 
@@ -69,10 +76,10 @@ const headCells: readonly HeadCell[] = [
     label: "Role",
   },
   {
-    id: "password",
+    id: "phone",
     numeric: true,
     disablePadding: false,
-    label: "Password",
+    label: "Phone",
   },
 ];
 
@@ -145,19 +152,14 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 interface EnhancedTableToolbarProps {
   numSelected: number;
   handleDeleteUser: (idArray: string[]) => void;
-  handleUpdateDialogState: (user: User) => void;
   selected: (string | undefined)[];
   setSelected: React.Dispatch<React.SetStateAction<readonly string[]>>;
 }
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-  const {
-    numSelected,
-    handleDeleteUser,
-    handleUpdateDialogState,
-    selected,
-    setSelected,
-  } = props;
+  const { numSelected, handleDeleteUser, selected, setSelected } = props;
+
+  const { handleUpdateInput } = useDialog();
 
   const handleDeleteAction = () => {
     handleDeleteUser(selected);
@@ -165,7 +167,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   };
 
   const handleUpdateAction = () => {
-    handleUpdateDialogState(selected);
+    handleUpdateInput(selected);
     setSelected([]);
   };
 
@@ -235,13 +237,11 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
 interface UsersTableProps {
   users: User[];
   handleDeleteUser: (idArray: string[]) => void;
-  handleUpdateDialogState: (user: User) => void;
 }
 
 export default function UsersTable({
   users,
   handleDeleteUser,
-  handleUpdateDialogState,
 }: UsersTableProps) {
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof User | "">("");
@@ -256,7 +256,16 @@ export default function UsersTable({
 
     users.forEach((user: User) => {
       arr.push(
-        createData(user._id!, user.nombre, user.email, user.role, user.password)
+        createData(
+          user._id!,
+          user.nombre,
+          user.email,
+          user.role,
+          user.password,
+          user?.apellido1,
+          user?.apellido2,
+          user?.telefono
+        )
       );
     });
     setRows(arr);
@@ -328,7 +337,6 @@ export default function UsersTable({
         <EnhancedTableToolbar
           numSelected={selected.length}
           handleDeleteUser={handleDeleteUser}
-          handleUpdateDialogState={handleUpdateDialogState}
           selected={selected!}
           setSelected={setSelected}
         />
@@ -380,11 +388,27 @@ export default function UsersTable({
                         scope="row"
                         padding="none"
                       >
-                        {row.nombre}
+                        {`${row.nombre} ${row?.apellido1 || ""} ${
+                          row?.apellido2 || ""
+                        }`}
                       </TableCell>
                       <TableCell align="right">{row.email}</TableCell>
-                      <TableCell align="right">{row.role}</TableCell>
-                      <TableCell align="right">{row.password}</TableCell>
+                      <TableCell align="right">
+                        {/* {row.role} */}
+                        <Chip
+                          label={row.role}
+                          color={
+                            row.role === "evaluador"
+                              ? "primary"
+                              : row.role === "participante"
+                              ? "secondary"
+                              : row.role === "superuser"
+                              ? "success"
+                              : "warning"
+                          }
+                        />
+                      </TableCell>
+                      <TableCell align="right">{row.telefono}</TableCell>
                     </TableRow>
                   );
                 })}

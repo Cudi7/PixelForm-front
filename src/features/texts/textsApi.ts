@@ -10,7 +10,7 @@ export const textApi = createApi({
   endpoints: (builder) => ({
     getAll: builder.query<Text[], void>({
       query: () => `/texts`,
-      providesTags: [{ type: "Texts", id: "textsLIST" }],
+      providesTags: [{ type: "Texts", id: "LIST" }],
     }),
     addText: builder.mutation<Text, Text>({
       query(text: Text) {
@@ -20,27 +20,27 @@ export const textApi = createApi({
           body: text,
         };
       },
-      invalidatesTags: [{ type: "Texts", id: "textsLIST" }],
+      invalidatesTags: [{ type: "Texts", id: "LIST" }],
     }),
-    // deleteUsers: builder.mutation<string[], User>({
-    //   query(idArray: string[]) {
-    //     return {
-    //       url: `users/delete`,
-    //       method: "DELETE",
-    //       body: idArray,
-    //     };
-    //   },
-    //   invalidatesTags: [{ type: "Users", id: "LIST" }],
-    // }),
-    // updateUser: builder.mutation<User, User>({
-    //   query(user: User) {
-    //     return {
-    //       url: `users/update`,
-    //       method: "PATCH",
-    //       body: user,
-    //     };
-    //   },
-    //   invalidatesTags: [{ type: "Users", id: "LIST" }],
-    // }),
+    deleteTexts: builder.mutation<string[], Text>({
+      query(idArray: string[]) {
+        return {
+          url: `texts/delete`,
+          method: "DELETE",
+          body: idArray,
+        };
+      },
+      invalidatesTags: [{ type: "Texts", id: "LIST" }],
+    }),
+    updateText: builder.mutation<Text, Text>({
+      query(text: Text) {
+        return {
+          url: `texts/update`,
+          method: "PATCH",
+          body: text,
+        };
+      },
+      invalidatesTags: [{ type: "Texts", id: "LIST" }],
+    }),
   }),
 });

@@ -14,17 +14,24 @@ import { listFetched } from "../src/features/texts/textsSlice";
 import { textApi } from "../src/features/texts/textsApi";
 import TextsTable from "../src/features/texts/TextsTable";
 import TextDialog from "../src/features/texts/TextsDialog";
+import { useDialog } from "../src/contexts/dialog.context";
+import dynamic from "next/dynamic";
+
+const MessageAlertNotification = dynamic(
+  () => import("../src/common/components/MessageAlertNotification"),
+  {
+    loading: () => <div>Loading...</div>,
+  }
+);
 
 const Texts: NextPage = () => {
   const dispatch = useAppDispatch();
-  const [showNewTextDialog, setShowNewTextDialog] = React.useState(false);
-  const [showEditTextDialog, setShowEditTextDialog] = React.useState(false);
-  const [isEditing, setIsEditing] = React.useState<Text | boolean>(false);
 
   const { data, error, isLoading } = textApi.useGetAllQuery();
-  const [addText] = textApi.useAddTextMutation();
-  //   const [deleteUsers] = userApi.useDeleteUsersMutation();
-  //   const [updateUser] = userApi.useUpdateUserMutation();
+  const [deleteTexts] = textApi.useDeleteTextsMutation();
+
+  const { statusMessage, statusType, handleStatusMessage, handleStatusType } =
+    useDialog();
 
   React.useEffect(() => {
     if (data?.texts) {
@@ -32,67 +39,29 @@ const Texts: NextPage = () => {
     }
   }, [data]);
 
-  const handleDialogState = () => {
-    setShowNewTextDialog(false);
-    setShowEditTextDialog(false);
-    setIsEditing(false);
-  };
-
-  const handleUpdateDialogState = (idArray: string[]) => {
-    const editedText = data?.texts!.find((el: Text) => el._id === idArray[0]);
-    setIsEditing(editedText!);
-    setShowEditTextDialog(true);
-  };
-
-  const handleNewText = React.useCallback(
-    (newText: Text) => {
-      addText(newText)
-        .unwrap()
-        .then((payload) => {
-          console.log("texto añadido correctamente");
-        })
-        .catch((error) => {
-          console.error(error.data.error);
-          console.log("ha habido un error");
-        });
-    },
-    [addText]
-  );
+  if (error) {
+    handleStatusMessage(JSON.stringify(error, null, 1));
+    handleStatusType("error");
+  }
 
   const handleDeleteText = React.useCallback(
     (idArray: string[]) => {
-      // deleteUsers(idArray)
-      //   .unwrap()
-      //   .then(() => {
-      //     console.log("usuario/s eliminado/s correctamente");
-      //   })
-      //   .catch((error) => {
-      //     console.error(error);
-      //     console.log("ha habido un error");
-      //   });
+      deleteTexts(idArray)
+        .unwrap()
+        .then(() => {
+          handleStatusMessage("Texto/s eliminado/s correctamente");
+          handleStatusType("info");
+        })
+        .catch((error) => {
+          handleStatusMessage(JSON.stringify(error, null, 1));
+          handleStatusType("error");
+        });
     },
-    // [deleteUsers]
-    []
-  );
-
-  const handleUpdateText = React.useCallback(
-    (text: Text) => {
-      // updateText(text)
-      //   .unwrap()
-      //   .then(() => {
-      //     console.log("texto actualizado correctamente");
-      //   })
-      //   .catch((error) => {
-      //     console.error(error);
-      //     console.log("ha habido un error");
-      //   });
-    },
-    // [updateText]
-    []
+    [deleteTexts]
   );
 
   return (
-    <Container maxWidth="lg">
+    <Container sx={{ width: "100%" }}>
       <Box
         sx={{
           my: 4,
@@ -105,42 +74,25 @@ const Texts: NextPage = () => {
         <Typography variant="h4" component="h1" gutterBottom>
           Texts Page
         </Typography>
-        <div style={{ height: "70vh" }}>
+        <div style={{ maxWidth: 800 }}>
+          <TextDialog />
+
+          <MessageAlertNotification
+            message={statusMessage}
+            severity={statusType}
+          />
+
           {data?.texts && (
             <TextsTable
               texts={data?.texts}
               handleDeleteText={handleDeleteText}
-              handleUpdateDialogState={handleUpdateDialogState}
             />
           )}
-          {error && <p>{error.data.error}</p>}
           {isLoading && <CircularProgress />}
-          {showNewTextDialog && (
-            <TextDialog
-              handleDialogState={handleDialogState}
-              handleNewText={handleNewText}
-              handleUpdateText={handleUpdateText}
-              isEditing={false}
-            />
-          )}
-          {/* {showEditTextDialog && (
-            <TextDialog
-              handleDialogState={handleDialogState}
-              handleNewText={handleNewText}
-              handleUpdateText={handleUpdateText}
-              isEditing={isEditing}
-            />
-          )} */}
         </div>
         <Box maxWidth="sm">
           <Button variant="contained" component={Link} noLinkStyle href="/">
             Go to the home page
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => setShowNewTextDialog((prev) => !prev)}
-          >
-            Create hardcoded text
           </Button>
         </Box>
         <ProTip />

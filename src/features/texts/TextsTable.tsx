@@ -24,6 +24,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { Text } from "../../common/interfaces/text.interface";
 import { getComparator, Order } from "../../common/tableHelpers";
+import { useDialog } from "../../contexts/dialog.context";
 
 function createData(
   _id: string,
@@ -51,20 +52,20 @@ const headCells: readonly HeadCell[] = [
     id: "title",
     numeric: false,
     disablePadding: true,
-    label: "Nombre",
+    label: "Title",
   },
 
   {
     id: "description",
     numeric: true,
     disablePadding: false,
-    label: "Email",
+    label: "Description",
   },
   {
     id: "type",
     numeric: true,
     disablePadding: false,
-    label: "Role",
+    label: "Type",
   },
 ];
 
@@ -137,19 +138,14 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 interface EnhancedTableToolbarProps {
   numSelected: number;
   handleDeleteText: (idArray: string[]) => void;
-  handleUpdateDialogState: (text: Text) => void;
   selected: (string | undefined)[];
   setSelected: React.Dispatch<React.SetStateAction<readonly string[]>>;
 }
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-  const {
-    numSelected,
-    handleDeleteText,
-    handleUpdateDialogState,
-    selected,
-    setSelected,
-  } = props;
+  const { numSelected, handleDeleteText, selected, setSelected } = props;
+
+  const { handleUpdateInput } = useDialog();
 
   const handleDeleteAction = () => {
     handleDeleteText(selected);
@@ -157,7 +153,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   };
 
   const handleUpdateAction = () => {
-    handleUpdateDialogState(selected);
+    handleUpdateInput(selected);
     setSelected([]);
   };
 
@@ -227,13 +223,11 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
 interface TextsTableProps {
   texts: Text[];
   handleDeleteText: (idArray: string[]) => void;
-  handleUpdateDialogState: (text: Text) => void;
 }
 
 export default function TextsTable({
   texts,
   handleDeleteText,
-  handleUpdateDialogState,
 }: TextsTableProps) {
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Text | "">("");
@@ -318,7 +312,6 @@ export default function TextsTable({
         <EnhancedTableToolbar
           numSelected={selected.length}
           handleDeleteText={handleDeleteText}
-          handleUpdateDialogState={handleUpdateDialogState}
           selected={selected!}
           setSelected={setSelected}
         />
