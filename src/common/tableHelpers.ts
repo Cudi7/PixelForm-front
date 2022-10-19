@@ -1,5 +1,3 @@
-import { filter } from "lodash";
-import { Text } from "./interfaces/text.interface";
 import { User } from "./interfaces/user.interface";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -23,7 +21,11 @@ export function getComparator<Key extends keyof any>(
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-export function applySortFilter(array: User[], query: string) {
+export function applySortFilter(
+  array: User[],
+  query: string,
+  selectedFilter: string
+) {
   const arrayWithFullStringVal = array.map((el) => {
     return {
       ...el,
@@ -31,7 +33,15 @@ export function applySortFilter(array: User[], query: string) {
     };
   });
 
-  return arrayWithFullStringVal.filter((el) =>
-    el.fullString.toLowerCase().includes(query.toLowerCase())
+  if (selectedFilter === "all") {
+    return arrayWithFullStringVal.filter((el) =>
+      el.fullString.toLowerCase().includes(query.toLowerCase())
+    );
+  }
+
+  return arrayWithFullStringVal.filter(
+    (el) =>
+      el.fullString.toLowerCase().includes(query.toLowerCase()) &&
+      el.role.toLowerCase().includes(selectedFilter)
   );
 }
