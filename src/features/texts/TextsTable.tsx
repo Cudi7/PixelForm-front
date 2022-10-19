@@ -1,30 +1,29 @@
 import * as React from "react";
-import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import TableSortLabel from "@mui/material/TableSortLabel";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
+
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
+
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import FilterListIcon from "@mui/icons-material/FilterList";
 
-import { visuallyHidden } from "@mui/utils";
 import { Text } from "../../common/interfaces/text.interface";
-import { getComparator, Order } from "../../common/tableHelpers";
-import { useDialog } from "../../contexts/dialog.context";
+import {
+  applyTextSortFilter,
+  getComparator,
+  Order,
+} from "../../common/tableHelpers";
+import EnhancedTableHead from "./TextsTableHead";
+import EnhancedTableToolbar from "./TextTableToolbar";
+import { useSearch } from "../../contexts/search.context";
+import SearchNotFound from "../../common/components/SearchNotFound";
+import { Chip } from "@mui/material";
 
 function createData(
   _id: string,
@@ -39,186 +38,6 @@ function createData(
     type,
   };
 }
-
-interface HeadCell {
-  disablePadding: boolean;
-  id: keyof Text;
-  label: string;
-  numeric: boolean;
-}
-
-const headCells: readonly HeadCell[] = [
-  {
-    id: "title",
-    numeric: false,
-    disablePadding: true,
-    label: "Title",
-  },
-
-  {
-    id: "description",
-    numeric: true,
-    disablePadding: false,
-    label: "Description",
-  },
-  {
-    id: "type",
-    numeric: true,
-    disablePadding: false,
-    label: "Type",
-  },
-];
-
-interface EnhancedTableProps {
-  numSelected: number;
-  onRequestSort: (
-    event: React.MouseEvent<unknown>,
-    property: keyof Text
-  ) => void;
-  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  order: Order;
-  orderBy: string;
-  rowCount: number;
-}
-
-function EnhancedTableHead(props: EnhancedTableProps) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
-  const createSortHandler =
-    (property: keyof Text) => (event: React.MouseEvent<unknown>) => {
-      onRequestSort(event, property);
-    };
-
-  return (
-    <TableHead>
-      <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "select all desserts",
-            }}
-          />
-        </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
-
-interface EnhancedTableToolbarProps {
-  numSelected: number;
-  handleDeleteText: (idArray: string[]) => void;
-  selected: (string | undefined)[];
-  setSelected: React.Dispatch<React.SetStateAction<readonly string[]>>;
-}
-
-const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-  const { numSelected, handleDeleteText, selected, setSelected } = props;
-
-  const { handleUpdateInput } = useDialog();
-
-  const handleDeleteAction = () => {
-    handleDeleteText(selected);
-    setSelected([]);
-  };
-
-  const handleUpdateAction = () => {
-    handleUpdateInput(selected);
-    setSelected([]);
-  };
-
-  return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
-            ),
-        }),
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Text Table
-        </Typography>
-      )}
-      {numSelected === 1 ? (
-        <>
-          <Tooltip title="Edit">
-            <IconButton onClick={handleUpdateAction}>
-              <EditIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Delete">
-            <IconButton onClick={handleDeleteAction}>
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        </>
-      ) : numSelected > 1 ? (
-        <Tooltip title="Delete all">
-          <IconButton onClick={handleDeleteAction}>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
-  );
-};
 
 interface TextsTableProps {
   texts: Text[];
@@ -236,6 +55,9 @@ export default function TextsTable({
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = React.useState<Text[]>([]);
+  const [selectedFilter, setSelectedFilter] = React.useState<string>("all");
+
+  const { filterName } = useSearch();
 
   React.useEffect(() => {
     const arr: Text[] = [];
@@ -245,6 +67,10 @@ export default function TextsTable({
     });
     setRows(arr);
   }, [texts]);
+
+  const handleSelectedFilter = (type: string): void => {
+    setSelectedFilter(type);
+  };
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -306,6 +132,12 @@ export default function TextsTable({
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
+  const filteredUsers = React.useMemo(() => {
+    return rows ? applyTextSortFilter(rows, filterName, selectedFilter) : [];
+  }, [filterName, rows, selectedFilter]);
+
+  const isUserNotFound = filteredUsers?.length === 0;
+
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
@@ -314,6 +146,8 @@ export default function TextsTable({
           handleDeleteText={handleDeleteText}
           selected={selected!}
           setSelected={setSelected}
+          handleSelectedFilter={handleSelectedFilter}
+          selectedFilter={selectedFilter}
         />
         <TableContainer sx={{ maxHeight: "60vh" }}>
           <Table
@@ -327,10 +161,10 @@ export default function TextsTable({
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={filteredUsers.length}
             />
             <TableBody>
-              {rows
+              {filteredUsers
                 .slice()
                 .sort(getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -366,7 +200,9 @@ export default function TextsTable({
                         {row.title}
                       </TableCell>
                       <TableCell align="right">{row.description}</TableCell>
-                      <TableCell align="right">{row.type}</TableCell>
+                      <TableCell align="right">
+                        <Chip label={row.type} />
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -380,6 +216,15 @@ export default function TextsTable({
                 </TableRow>
               )}
             </TableBody>
+            {isUserNotFound && (
+              <TableBody>
+                <TableRow>
+                  <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                    <SearchNotFound searchQuery={filterName} />
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            )}
           </Table>
         </TableContainer>
         <TablePagination

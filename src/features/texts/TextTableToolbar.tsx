@@ -12,23 +12,28 @@ import EditIcon from "@mui/icons-material/Edit";
 import FilterListIcon from "@mui/icons-material/FilterList";
 
 import { useDialog } from "../../contexts/dialog.context";
-import Badge from "@mui/material/Badge";
 import Search from "../../common/components/Search";
 
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import Badge from "@mui/material/Badge";
 
 const filterItemsList = [
   "all",
-  "superuser",
-  "participante",
-  "evaluador",
-  "administrador",
+  "recreational",
+  "busywork",
+  "charity",
+  "relaxation",
+  "education",
+  "music",
+  "social",
+  "diy",
+  "cooking",
 ];
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
-  handleDeleteUser: (idArray: string[]) => void;
+  handleDeleteText: (idArray: string[]) => void;
   selected: (string | undefined)[];
   setSelected: React.Dispatch<React.SetStateAction<readonly string[]>>;
   handleSelectedFilter: (type: string) => void;
@@ -37,16 +42,17 @@ interface EnhancedTableToolbarProps {
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { handleUpdateInput } = useDialog();
 
   const {
     numSelected,
-    handleDeleteUser,
+    handleDeleteText,
     selected,
     setSelected,
     handleSelectedFilter,
     selectedFilter,
   } = props;
+
+  const { handleUpdateInput } = useDialog();
 
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
@@ -61,12 +67,12 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
     handleSelectedFilter(type);
   };
 
-  const handleDeleteAction = (): void => {
-    handleDeleteUser(selected);
+  const handleDeleteAction = () => {
+    handleDeleteText(selected);
     setSelected([]);
   };
 
-  const handleUpdateAction = (): void => {
+  const handleUpdateAction = () => {
     handleUpdateInput(selected);
     setSelected([]);
   };
@@ -101,7 +107,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
           id="tableTitle"
           component="div"
         >
-          Users Table
+          Text Table
         </Typography>
       )}
       {numSelected === 1 ? (

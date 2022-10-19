@@ -1,40 +1,66 @@
-# Next.js with TypeScript example
+# Next.js with TypeScript (Users and Texts App)
 
-## How to use
+## Stack
 
-Download the example [or clone the repo](https://github.com/mui/material-ui):
+In this app I used:
 
-<!-- #default-branch-switch -->
+### Front
 
-```sh
-curl https://codeload.github.com/mui/material-ui/tar.gz/master | tar -xz --strip=2  material-ui-master/examples/nextjs-with-typescript
-cd nextjs-with-typescript
-```
+- Typescript
+- React with Nextjs
+- Material-UI
+- Redux Toolkit with RTK Query
+- Usual hooks, plus, useContext, useCallback and useMemo
+- Formik + Yup
+- React testing library and Jest
 
-Install it and run:
+### Back
 
-```sh
+- Typescript
+- NodeJS
+- Express
+- MongoDB
+
+## Components
+
+hgfh
+
+## What can you do?
+
+hgfh
+
+## Installation
+
+`cd` in folders front and back and execute, in each folder:
+
+```bash
 npm install
-npm run dev
 ```
 
-or:
+## Usage
 
-<!-- #default-branch-switch -->
+```python
+import foobar
 
-[![Edit on StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/mui/material-ui/tree/master/examples/nextjs-with-typescript)
+# returns 'words'
+foobar.pluralize('word')
 
-[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/mui/material-ui/tree/master/examples/nextjs-with-typescript)
+# returns 'geese'
+foobar.pluralize('goose')
 
-## The idea behind the example
+# returns 'phenomenon'
+foobar.singularize('phenomena')
+```
 
-The project uses [Next.js](https://github.com/vercel/next.js), which is a framework for server-rendered React apps.
-It includes `@mui/material` and its peer dependencies, including `emotion`, the default style engine in MUI v5. If you prefer, you can [use styled-components instead](https://mui.com/material-ui/guides/interoperability/#styled-components).
+## Contributing
 
-## The link component
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-The [example folder](https://github.com/mui/material-ui/tree/HEAD/examples/nextjs-with-typescript) provides an adapter for the use of [Next.js's Link component](https://nextjs.org/docs/api-reference/next/link) with MUI.
-More information [in the documentation](https://mui.com/material-ui/guides/routing/#next-js).
+Please make sure to update tests as appropriate.
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
 
 ## What's next?
 

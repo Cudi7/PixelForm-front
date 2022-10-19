@@ -1,4 +1,5 @@
 import { User } from "./interfaces/user.interface";
+import { Text } from "./interfaces/text.interface";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -21,12 +22,12 @@ export function getComparator<Key extends keyof any>(
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-export function applySortFilter(
-  array: User[],
+export function applyUserSortFilter(
+  userArr: User[],
   query: string,
   selectedFilter: string
 ) {
-  const arrayWithFullStringVal = array.map((el) => {
+  const arrayWithFullStringVal = userArr.map((el) => {
     return {
       ...el,
       fullString: `${el.nombre} ${el.apellido1} ${el.apellido2} ${el.email} ${el.role} ${el.telefono}`,
@@ -43,5 +44,30 @@ export function applySortFilter(
     (el) =>
       el.fullString.toLowerCase().includes(query.toLowerCase()) &&
       el.role.toLowerCase().includes(selectedFilter)
+  );
+}
+
+export function applyTextSortFilter(
+  textArr: Text[],
+  query: string,
+  selectedFilter: string
+) {
+  const arrayWithFullStringVal = textArr.map((el) => {
+    return {
+      ...el,
+      fullString: `${el.type} ${el.title} ${el.description}`,
+    };
+  });
+
+  if (selectedFilter === "all") {
+    return arrayWithFullStringVal.filter((el) =>
+      el.fullString.toLowerCase().includes(query.toLowerCase())
+    );
+  }
+
+  return arrayWithFullStringVal.filter(
+    (el) =>
+      el.fullString.toLowerCase().includes(query.toLowerCase()) &&
+      el.type.toLowerCase().includes(selectedFilter)
   );
 }

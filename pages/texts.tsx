@@ -16,6 +16,7 @@ import TextsTable from "../src/features/texts/TextsTable";
 import TextDialog from "../src/features/texts/TextsDialog";
 import { useDialog } from "../src/contexts/dialog.context";
 import dynamic from "next/dynamic";
+import { SearchProvider } from "../src/contexts/search.context";
 
 const MessageAlertNotification = dynamic(
   () => import("../src/common/components/MessageAlertNotification"),
@@ -83,10 +84,12 @@ const Texts: NextPage = () => {
           />
 
           {data?.texts && (
-            <TextsTable
-              texts={data?.texts}
-              handleDeleteText={handleDeleteText}
-            />
+            <SearchProvider>
+              <TextsTable
+                texts={data?.texts}
+                handleDeleteText={handleDeleteText}
+              />
+            </SearchProvider>
           )}
           {isLoading && <CircularProgress />}
         </div>

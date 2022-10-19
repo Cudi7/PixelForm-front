@@ -17,7 +17,7 @@ import { User } from "../../common/interfaces/user.interface";
 import { getComparator, Order } from "../../common/tableHelpers";
 import { Chip } from "@mui/material";
 import { useSearch } from "../../contexts/search.context";
-import { applySortFilter } from "../../common/tableHelpers";
+import { applyUserSortFilter } from "../../common/tableHelpers";
 import SearchNotFound from "../../common/components/SearchNotFound";
 import EnhancedTableToolbar from "./UsersTableToolbar";
 import EnhancedTableHead from "./UsersTableHead";
@@ -149,7 +149,7 @@ export default function UsersTable({
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   const filteredUsers = React.useMemo(() => {
-    return rows ? applySortFilter(rows, filterName, selectedFilter) : [];
+    return rows ? applyUserSortFilter(rows, filterName, selectedFilter) : [];
   }, [filterName, rows, selectedFilter]);
 
   const isUserNotFound = filteredUsers?.length === 0;

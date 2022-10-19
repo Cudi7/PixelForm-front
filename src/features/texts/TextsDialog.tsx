@@ -29,7 +29,7 @@ export default function TextDialog() {
 
   const formik = useFormik({
     initialValues: {
-      type: selectedInput?.type || "email",
+      type: selectedInput?.type || "charity",
       title: selectedInput?.title || "",
       description: selectedInput?.description || "",
       _id: selectedInput?._id,
@@ -159,6 +159,7 @@ export default function TextDialog() {
               onChange={formik.handleChange}
               error={formik.touched.type && Boolean(formik.errors.type)}
               helperText={formik.touched.type && formik.errors.type}
+              disabled
             />
           </DialogContent>
           <DialogActions>
