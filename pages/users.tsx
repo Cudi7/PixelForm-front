@@ -17,6 +17,8 @@ import UserDialog from "../src/features/users/UsersDialog";
 import { useDialog } from "../src/contexts/dialog.context";
 import MessageAlertNotification from "../src/common/components/MessageAlertNotification";
 
+import { SearchProvider } from "../src/contexts/search.context";
+
 const Users: NextPage = () => {
   const dispatch = useAppDispatch();
 
@@ -54,7 +56,7 @@ const Users: NextPage = () => {
   );
 
   return (
-    <Container maxWidth="lg">
+    <Container sx={{ width: "100%" }}>
       <Box
         sx={{
           my: 4,
@@ -68,7 +70,7 @@ const Users: NextPage = () => {
           Users Page
         </Typography>
 
-        <div style={{ height: "70vh" }}>
+        <div style={{ maxWidth: 800 }}>
           <UserDialog />
           {statusMessage && (
             <MessageAlertNotification
@@ -77,10 +79,12 @@ const Users: NextPage = () => {
             />
           )}
           {data?.users && (
-            <UsersTable
-              users={data?.users}
-              handleDeleteUser={handleDeleteUser}
-            />
+            <SearchProvider>
+              <UsersTable
+                users={data?.users}
+                handleDeleteUser={handleDeleteUser}
+              />
+            </SearchProvider>
           )}
 
           {isLoading && <CircularProgress />}

@@ -24,13 +24,13 @@ export default function MyApp(props: MyAppProps) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <DialogProvider>
+        <DialogProvider>
+          <ThemeProvider theme={theme}>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
             <Component {...pageProps} />
-          </DialogProvider>
-        </ThemeProvider>
+          </ThemeProvider>
+        </DialogProvider>
       </Provider>
     </CacheProvider>
   );

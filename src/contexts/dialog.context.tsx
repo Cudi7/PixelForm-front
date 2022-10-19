@@ -1,3 +1,4 @@
+import { AlertColor } from "@mui/material";
 import { createContext, ReactNode, useContext, useState } from "react";
 import { useAppSelector } from "../common/hooks";
 import { Text } from "../common/interfaces/text.interface";
@@ -10,7 +11,9 @@ const useDialogController = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [selectedInput, setSelectedInput] = useState<User | Text | undefined>();
   const [statusMessage, setStatusMessage] = useState<string>("");
-  const [statusType, setStatusType] = useState<string>("");
+  const [statusType, setStatusType] = useState<AlertColor | undefined>(
+    undefined
+  );
 
   const users = useAppSelector(selectUsers);
   const texts = useAppSelector(selectTexts);
@@ -43,7 +46,8 @@ const useDialogController = () => {
 
   const handleStatusMessage = (message: string) => setStatusMessage(message);
 
-  const handleStatusType = (type: string) => setStatusType(type);
+  const handleStatusType = (type: AlertColor | undefined) =>
+    setStatusType(type);
 
   return {
     isOpen,
@@ -68,8 +72,8 @@ const DialogContext = createContext<ReturnType<typeof useDialogController>>({
   handleClose: () => {},
   handleStatusMessage: (message: string) => {},
   statusMessage: "",
-  handleStatusType: (type: string) => {},
-  statusType: "",
+  handleStatusType: (type: AlertColor | undefined) => {},
+  statusType: undefined,
 });
 
 export const DialogProvider = ({ children }: { children: ReactNode }) => (

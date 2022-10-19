@@ -1,31 +1,10 @@
-// import * as React from "react";
-// import Alert, { AlertColor } from "@mui/material/Alert";
-// import Stack from "@mui/material/Stack";
-
-// export default function MessageAlertNotification({
-//   severity,
-//   message,
-// }: MessageAlertNotificationProps) {
-//   console.log(message);
-
-//   return (
-//     <Stack sx={{ width: "100%", my: 5 }} spacing={2}>
-//       {/* <Alert severity="error">This is an error alert — check it out!</Alert>
-//       <Alert severity="warning">This is a warning alert — check it out!</Alert>
-//       <Alert severity="info">This is an info alert — check it out!</Alert>
-//       <Alert severity="success">This is a success alert — check it out!</Alert> */}
-//       <Alert severity={severity}></Alert>
-//     </Stack>
-//   );
-// }
-
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Alert, { AlertColor } from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
-import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
+import AlertTitle from "@mui/material/AlertTitle";
 import { useDialog } from "../../contexts/dialog.context";
 
 interface MessageAlertNotificationProps {
@@ -61,8 +40,13 @@ export default function MessageAlertNotification({
     handleStatusType("");
   };
 
-  return (
-    <Box sx={{ maxWidth: 750 }}>
+  return severity && message ? (
+    <Box
+      sx={{
+        width: "100vw",
+        maxWidth: 800,
+      }}
+    >
       <Collapse in={open}>
         <Alert
           severity={severity}
@@ -78,9 +62,10 @@ export default function MessageAlertNotification({
           }
           sx={{ mb: 2 }}
         >
-          {message}
+          <AlertTitle>{severity.toUpperCase()}</AlertTitle>
+          {severity === "error" ? <pre>{message}</pre> : message}
         </Alert>
       </Collapse>
     </Box>
-  );
+  ) : null;
 }

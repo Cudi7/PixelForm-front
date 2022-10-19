@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "jest",
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
     "@mui/material": "^5.10.9",
     "@reduxjs/toolkit": "^1.8.6",
     "formik": "^2.2.9",
+    "lodash": "^4.17.21",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
@@ -26,10 +28,15 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
     "@types/node": "latest",
     "@types/react": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
+    "jest": "^29.2.1",
+    "jest-environment-jsdom": "^29.2.1",
     "typescript": "latest"
   }
 }

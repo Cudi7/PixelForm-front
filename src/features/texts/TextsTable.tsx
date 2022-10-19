@@ -187,7 +187,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
           id="tableTitle"
           component="div"
         >
-          Nutrition
+          Text Table
         </Typography>
       )}
       {numSelected === 1 ? (
@@ -315,7 +315,7 @@ export default function TextsTable({
           selected={selected!}
           setSelected={setSelected}
         />
-        <TableContainer>
+        <TableContainer sx={{ maxHeight: "60vh" }}>
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"

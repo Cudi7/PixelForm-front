@@ -26,6 +26,10 @@ import { User } from "../../common/interfaces/user.interface";
 import { getComparator, Order } from "../../common/tableHelpers";
 import { useDialog } from "../../contexts/dialog.context";
 import { Chip } from "@mui/material";
+import Search from "../../common/components/Search";
+import { useSearch } from "../../contexts/search.context";
+import { applySortFilter } from "../../common/tableHelpers";
+
 function createData(
   _id: string,
   nombre: string,
@@ -76,7 +80,7 @@ const headCells: readonly HeadCell[] = [
     label: "Role",
   },
   {
-    id: "phone",
+    id: "telefono",
     numeric: true,
     disablePadding: false,
     label: "Phone",
@@ -162,8 +166,10 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   const { handleUpdateInput } = useDialog();
 
   const handleDeleteAction = () => {
-    handleDeleteUser(selected);
-    setSelected([]);
+    if (typeof selected === "string") {
+      handleDeleteUser(selected);
+      setSelected([]);
+    }
   };
 
   const handleUpdateAction = () => {
@@ -201,7 +207,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
           id="tableTitle"
           component="div"
         >
-          Nutrition
+          Users Table
         </Typography>
       )}
       {numSelected === 1 ? (
@@ -224,11 +230,14 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
+        <>
+          <Search />
+          <Tooltip title="Filter Role">
+            <IconButton>
+              <FilterListIcon />
+            </IconButton>
+          </Tooltip>
+        </>
       )}
     </Toolbar>
   );
@@ -250,6 +259,7 @@ export default function UsersTable({
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = React.useState<User[]>([]);
+  const { filterName } = useSearch();
 
   React.useEffect(() => {
     const arr: User[] = [];
@@ -331,8 +341,14 @@ export default function UsersTable({
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
+  const filteredUsers = React.useMemo(() => {
+    return rows ? applySortFilter(rows, filterName) : [];
+  }, [filterName, rows]);
+
+  const isUserNotFound = filteredUsers?.length === 0;
+
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%" }} role="table">
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar
           numSelected={selected.length}
@@ -340,7 +356,7 @@ export default function UsersTable({
           selected={selected!}
           setSelected={setSelected}
         />
-        <TableContainer>
+        <TableContainer sx={{ maxHeight: "60vh" }}>
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
@@ -355,7 +371,7 @@ export default function UsersTable({
               rowCount={rows.length}
             />
             <TableBody>
-              {rows
+              {filteredUsers
                 .slice()
                 .sort(getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -394,7 +410,6 @@ export default function UsersTable({
                       </TableCell>
                       <TableCell align="right">{row.email}</TableCell>
                       <TableCell align="right">
-                        {/* {row.role} */}
                         <Chip
                           label={row.role}
                           color={
@@ -427,7 +442,7 @@ export default function UsersTable({
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={filteredUsers.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

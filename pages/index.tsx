@@ -6,10 +6,11 @@ import Link from "../src/Link";
 import ProTip from "../src/ProTip";
 import Copyright from "../src/Copyright";
 import { DialogProvider } from "../src/contexts/dialog.context";
+import { EXPORT_DETAIL } from "next/dist/shared/lib/constants";
 
 const Home: NextPage = () => {
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" role="container">
       <Box
         sx={{
           my: 4,
