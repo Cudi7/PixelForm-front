@@ -9,7 +9,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useFormik } from "formik";
 import { Text } from "../../common/interfaces/text.interface";
 import { useDialog } from "../../contexts/dialog.context";
-import { textValidationSchema } from "./textValidationSchema";
+import { textValidationSchema } from "./textHelpers";
 import { textApi } from "./textsApi";
 
 export default function TextDialog() {

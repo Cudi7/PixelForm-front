@@ -17,6 +17,8 @@ import Search from "../../common/components/Search";
 
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import { useSearch } from "../../contexts/search.context";
 
 const filterItemsList = [
   "all",
@@ -33,11 +35,13 @@ interface EnhancedTableToolbarProps {
   setSelected: React.Dispatch<React.SetStateAction<readonly string[]>>;
   handleSelectedFilter: (type: string) => void;
   selectedFilter: string;
+  setOrderBy: React.Dispatch<React.SetStateAction<"" | keyof Text>>;
 }
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { handleUpdateInput } = useDialog();
+  const { clearFilterName } = useSearch();
 
   const {
     numSelected,
@@ -46,6 +50,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
     setSelected,
     handleSelectedFilter,
     selectedFilter,
+    setOrderBy,
   } = props;
 
   const open = Boolean(anchorEl);
@@ -69,6 +74,12 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   const handleUpdateAction = (): void => {
     handleUpdateInput(selected);
     setSelected([]);
+  };
+
+  const handleClearAll = () => {
+    handleSelection("all");
+    clearFilterName();
+    setOrderBy("");
   };
 
   return (
@@ -162,6 +173,11 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
               </MenuItem>
             ))}
           </Menu>
+          <Tooltip title="Clear Filters">
+            <IconButton onClick={handleClearAll}>
+              <HighlightOffIcon />
+            </IconButton>
+          </Tooltip>
         </>
       )}
     </Toolbar>

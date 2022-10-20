@@ -164,6 +164,7 @@ export default function UsersTable({
           setSelected={setSelected}
           handleSelectedFilter={handleSelectedFilter}
           selectedFilter={selectedFilter}
+          setOrderBy={setOrderBy}
         />
         <TableContainer sx={{ maxHeight: "60vh" }}>
           <Table

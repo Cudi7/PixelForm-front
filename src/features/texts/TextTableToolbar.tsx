@@ -18,18 +18,10 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Badge from "@mui/material/Badge";
 
-const filterItemsList = [
-  "all",
-  "recreational",
-  "busywork",
-  "charity",
-  "relaxation",
-  "education",
-  "music",
-  "social",
-  "diy",
-  "cooking",
-];
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+
+import { filterItemsList } from "./textHelpers";
+import { useSearch } from "../../contexts/search.context";
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
@@ -38,6 +30,7 @@ interface EnhancedTableToolbarProps {
   setSelected: React.Dispatch<React.SetStateAction<readonly string[]>>;
   handleSelectedFilter: (type: string) => void;
   selectedFilter: string;
+  setOrderBy: React.Dispatch<React.SetStateAction<"" | keyof Text>>;
 }
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
@@ -50,9 +43,11 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
     setSelected,
     handleSelectedFilter,
     selectedFilter,
+    setOrderBy,
   } = props;
 
   const { handleUpdateInput } = useDialog();
+  const { clearFilterName } = useSearch();
 
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
@@ -75,6 +70,12 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   const handleUpdateAction = () => {
     handleUpdateInput(selected);
     setSelected([]);
+  };
+
+  const handleClearAll = () => {
+    handleSelection("all");
+    clearFilterName();
+    setOrderBy("");
   };
 
   return (
@@ -168,6 +169,11 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
               </MenuItem>
             ))}
           </Menu>
+          <Tooltip title="Clear Filters">
+            <IconButton onClick={handleClearAll}>
+              <HighlightOffIcon />
+            </IconButton>
+          </Tooltip>
         </>
       )}
     </Toolbar>

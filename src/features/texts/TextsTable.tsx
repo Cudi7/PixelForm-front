@@ -24,6 +24,7 @@ import EnhancedTableToolbar from "./TextTableToolbar";
 import { useSearch } from "../../contexts/search.context";
 import SearchNotFound from "../../common/components/SearchNotFound";
 import { Chip } from "@mui/material";
+import { categoryColors } from "./textHelpers";
 
 function createData(
   _id: string,
@@ -148,6 +149,7 @@ export default function TextsTable({
           setSelected={setSelected}
           handleSelectedFilter={handleSelectedFilter}
           selectedFilter={selectedFilter}
+          setOrderBy={setOrderBy}
         />
         <TableContainer sx={{ maxHeight: "60vh" }}>
           <Table
@@ -201,7 +203,12 @@ export default function TextsTable({
                       </TableCell>
                       <TableCell align="right">{row.description}</TableCell>
                       <TableCell align="right">
-                        <Chip label={row.type} />
+                        <Chip
+                          label={row.type}
+                          sx={{
+                            backgroundColor: categoryColors(row.type),
+                          }}
+                        />
                       </TableCell>
                     </TableRow>
                   );
