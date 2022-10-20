@@ -83,8 +83,9 @@ export default function TextsTable({
   };
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.checked);
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n._id);
+      const newSelected = filteredTexts.map((n) => n._id);
       setSelected(newSelected);
       return;
     }
@@ -133,11 +134,11 @@ export default function TextsTable({
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-  const filteredUsers = React.useMemo(() => {
+  const filteredTexts = React.useMemo(() => {
     return rows ? applyTextSortFilter(rows, filterName, selectedFilter) : [];
   }, [filterName, rows, selectedFilter]);
 
-  const isUserNotFound = filteredUsers?.length === 0;
+  const isUserNotFound = filteredTexts?.length === 0;
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -150,6 +151,7 @@ export default function TextsTable({
           handleSelectedFilter={handleSelectedFilter}
           selectedFilter={selectedFilter}
           setOrderBy={setOrderBy}
+          handleChangePage={handleChangePage}
         />
         <TableContainer sx={{ maxHeight: "60vh" }}>
           <Table
@@ -163,10 +165,10 @@ export default function TextsTable({
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={filteredUsers.length}
+              rowCount={filteredTexts.length}
             />
             <TableBody>
-              {filteredUsers
+              {filteredTexts
                 .slice()
                 .sort(getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -237,7 +239,7 @@ export default function TextsTable({
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={filteredTexts.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

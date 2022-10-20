@@ -98,8 +98,10 @@ export default function UsersTable({
   };
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.checked);
+
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n._id);
+      const newSelected = filteredUsers.map((n) => n._id);
       setSelected(newSelected);
       return;
     }
@@ -165,6 +167,7 @@ export default function UsersTable({
           handleSelectedFilter={handleSelectedFilter}
           selectedFilter={selectedFilter}
           setOrderBy={setOrderBy}
+          handleChangePage={handleChangePage}
         />
         <TableContainer sx={{ maxHeight: "60vh" }}>
           <Table
@@ -178,7 +181,7 @@ export default function UsersTable({
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={filteredUsers.length}
             />
             <TableBody>
               {filteredUsers

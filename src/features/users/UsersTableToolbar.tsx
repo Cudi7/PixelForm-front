@@ -36,6 +36,7 @@ interface EnhancedTableToolbarProps {
   handleSelectedFilter: (type: string) => void;
   selectedFilter: string;
   setOrderBy: React.Dispatch<React.SetStateAction<"" | keyof Text>>;
+  handleChangePage: (event: unknown, newPage: number) => void;
 }
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
@@ -51,6 +52,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
     handleSelectedFilter,
     selectedFilter,
     setOrderBy,
+    handleChangePage,
   } = props;
 
   const open = Boolean(anchorEl);
@@ -62,6 +64,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   };
 
   const handleSelection = (type: string): void => {
+    handleChangePage(null, 0);
     handleClose();
     handleSelectedFilter(type);
   };
