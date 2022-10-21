@@ -13,20 +13,49 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 
-import { User } from "../../common/interfaces/user.interface";
+import { UserHeadCell, User } from "../../common/interfaces/user.interface";
 import { getComparator, Order } from "../../common/tableHelpers";
 import { Chip } from "@mui/material";
 import { useSearch } from "../../contexts/search.context";
 import { applyUserSortFilter } from "../../common/tableHelpers";
 import SearchNotFound from "../../common/components/SearchNotFound";
-import EnhancedTableToolbar from "./UsersTableToolbar";
-import EnhancedTableHead from "./UsersTableHead";
-import { categoryColors, createData } from "./userHelpers";
+import { categoryColors, createData, filterItemsList } from "./userHelpers";
+import { useTableController } from "../../common/hooks.table";
+import EnhancedTableHead from "../../common/components/TableHead";
+import EnhancedTableToolbar from "../../common/components/TableToolbar";
 
 interface UsersTableProps {
   users: User[];
   handleDeleteUser: (idArray: string[]) => void;
 }
+
+const headCells: readonly UserHeadCell[] = [
+  {
+    id: "nombre",
+    numeric: false,
+    disablePadding: true,
+    label: "Nombre",
+  },
+
+  {
+    id: "email",
+    numeric: true,
+    disablePadding: false,
+    label: "Email",
+  },
+  {
+    id: "role",
+    numeric: true,
+    disablePadding: false,
+    label: "Role",
+  },
+  {
+    id: "telefono",
+    numeric: true,
+    disablePadding: false,
+    label: "Phone",
+  },
+];
 
 export default function UsersTable({
   users,
@@ -34,14 +63,24 @@ export default function UsersTable({
 }: UsersTableProps) {
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof User | "">("");
-  const [selected, setSelected] = React.useState<(string | undefined)[]>([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = React.useState<User[]>([]);
-  const [selectedFilter, setSelectedFilter] = React.useState<string>("all");
 
   const { filterName } = useSearch();
+  const {
+    selected,
+    setSelected,
+    handleSelectionClick,
+    page,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    rowsPerPage,
+    dense,
+    handleChangeDense,
+    emptyRows,
+    handleSelectedFilter,
+    selectedFilter,
+    handleSelectAllClick,
+  } = useTableController();
 
   React.useEffect(() => {
     const arr: User[] = [];
@@ -63,10 +102,6 @@ export default function UsersTable({
     setRows(arr);
   }, [users]);
 
-  const handleSelectedFilter = (type: string): void => {
-    setSelectedFilter(type);
-  };
-
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: keyof User
@@ -76,58 +111,7 @@ export default function UsersTable({
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.checked);
-
-    if (event.target.checked) {
-      const newSelected = filteredUsers.map((n) => n._id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-    const selectedIndex = selected.indexOf(name);
-
-    let newSelected: (string | undefined)[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDense(event.target.checked);
-  };
-
   const isSelected = (name: string) => selected.indexOf(name) !== -1;
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   const filteredUsers = React.useMemo(() => {
     return rows ? applyUserSortFilter(rows, filterName, selectedFilter) : [];
@@ -147,6 +131,7 @@ export default function UsersTable({
           selectedFilter={selectedFilter}
           setOrderBy={setOrderBy}
           handleChangePage={handleChangePage}
+          filterItemsList={filterItemsList}
         />
         <TableContainer sx={{ maxHeight: "60vh" }}>
           <Table
@@ -158,9 +143,10 @@ export default function UsersTable({
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
+              onSelectAllClick={(e) => handleSelectAllClick(e, filteredUsers)}
               onRequestSort={handleRequestSort}
               rowCount={filteredUsers.length}
+              headCells={headCells}
             />
             <TableBody>
               {filteredUsers
@@ -174,7 +160,7 @@ export default function UsersTable({
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row._id!)}
+                      onClick={(event) => handleSelectionClick(event, row._id!)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -211,10 +197,10 @@ export default function UsersTable({
                     </TableRow>
                   );
                 })}
-              {emptyRows > 0 && (
+              {emptyRows(rows) > 0 && (
                 <TableRow
                   style={{
-                    height: (dense ? 33 : 53) * emptyRows,
+                    height: (dense ? 33 : 53) * emptyRows(rows),
                   }}
                 >
                   <TableCell colSpan={6} />

@@ -9,7 +9,7 @@ import ProTip from "../src/ProTip";
 import Copyright from "../src/Copyright";
 
 import CircularProgress from "@mui/material/CircularProgress";
-import { useAppDispatch } from "../src/common/hooks";
+import { useAppDispatch } from "../src/common/hooks.redux";
 import { listFetched } from "../src/features/texts/textsSlice";
 import { textApi } from "../src/features/texts/textsApi";
 import TextsTable from "../src/features/texts/TextsTable";

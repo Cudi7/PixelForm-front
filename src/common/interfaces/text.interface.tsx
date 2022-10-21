@@ -5,3 +5,10 @@ export interface Text {
   description: string;
   date?: string;
 }
+
+export interface TextHeadCell {
+  disablePadding: boolean;
+  id: keyof Text;
+  label: string;
+  numeric: boolean;
+}

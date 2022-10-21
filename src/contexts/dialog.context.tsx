@@ -1,6 +1,6 @@
 import { AlertColor } from "@mui/material";
 import { createContext, ReactNode, useContext, useState } from "react";
-import { useAppSelector } from "../common/hooks";
+import { useAppSelector } from "../common/hooks.redux";
 import { Text } from "../common/interfaces/text.interface";
 import { User } from "../common/interfaces/user.interface";
 import { selectTexts } from "../features/texts/textsSlice";

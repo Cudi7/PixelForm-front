@@ -1,6 +1,5 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -9,55 +8,23 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Checkbox from "@mui/material/Checkbox";
 
 import { visuallyHidden } from "@mui/utils";
-import { User } from "../../common/interfaces/user.interface";
+import { Text } from "../../common/interfaces/text.interface";
 import { Order } from "../../common/tableHelpers";
+import { UserHeadCell } from "../interfaces/user.interface";
+import { TextHeadCell } from "../interfaces/text.interface";
 
 interface EnhancedTableProps {
   numSelected: number;
   onRequestSort: (
     event: React.MouseEvent<unknown>,
-    property: keyof User
+    property: keyof Text
   ) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
   orderBy: string;
   rowCount: number;
+  headCells: readonly (UserHeadCell | TextHeadCell)[];
 }
-
-interface HeadCell {
-  disablePadding: boolean;
-  id: keyof User;
-  label: string;
-  numeric: boolean;
-}
-
-const headCells: readonly HeadCell[] = [
-  {
-    id: "nombre",
-    numeric: false,
-    disablePadding: true,
-    label: "Nombre",
-  },
-
-  {
-    id: "email",
-    numeric: true,
-    disablePadding: false,
-    label: "Email",
-  },
-  {
-    id: "role",
-    numeric: true,
-    disablePadding: false,
-    label: "Role",
-  },
-  {
-    id: "telefono",
-    numeric: true,
-    disablePadding: false,
-    label: "Phone",
-  },
-];
 
 function EnhancedTableHead(props: EnhancedTableProps) {
   const {
@@ -67,9 +34,11 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     numSelected,
     rowCount,
     onRequestSort,
+    headCells,
   } = props;
+
   const createSortHandler =
-    (property: keyof User) => (event: React.MouseEvent<unknown>) => {
+    (property: keyof Text) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 

@@ -16,3 +16,10 @@ export interface User {
   date?: string;
   type?: string;
 }
+
+export interface UserHeadCell {
+  disablePadding: boolean;
+  id: keyof User;
+  label: string;
+  numeric: boolean;
+}

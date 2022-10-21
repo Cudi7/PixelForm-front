@@ -11,7 +11,7 @@ import UsersTable from "../src/features/users/UsersTable";
 import { userApi } from "../src/features/users/usersApi";
 
 import CircularProgress from "@mui/material/CircularProgress";
-import { useAppDispatch } from "../src/common/hooks";
+import { useAppDispatch } from "../src/common/hooks.redux";
 import { listFetched } from "../src/features/users/usersSlice";
 import UserDialog from "../src/features/users/UsersDialog";
 import { useDialog } from "../src/contexts/dialog.context";

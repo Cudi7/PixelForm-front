@@ -12,18 +12,16 @@ import EditIcon from "@mui/icons-material/Edit";
 import FilterListIcon from "@mui/icons-material/FilterList";
 
 import { useDialog } from "../../contexts/dialog.context";
-import Search from "../../common/components/Search";
+import Search from "./Search";
 
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Badge from "@mui/material/Badge";
-
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-
-import { filterItemsList } from "./textHelpers";
 import { useSearch } from "../../contexts/search.context";
-
 import HistoryIcon from "@mui/icons-material/History";
+import { useTableToolbarController } from "../hooks.tableToolbar";
+import { Text } from "../interfaces/text.interface";
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
@@ -34,12 +32,14 @@ interface EnhancedTableToolbarProps {
   selectedFilter: string;
   setOrderBy: React.Dispatch<React.SetStateAction<"" | keyof Text>>;
   handleChangePage: (event: unknown, newPage: number) => void;
+  filterItemsList: string[];
 }
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { handleUpdateInput } = useDialog();
   const { clearFilterName } = useSearch();
+  const { anchorEl, handleClick, handleClose, handleHistoryAction, open } =
+    useTableToolbarController();
 
   const {
     numSelected,
@@ -50,16 +50,8 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
     selectedFilter,
     setOrderBy,
     handleChangePage,
+    filterItemsList,
   } = props;
-
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = (): void => {
-    setAnchorEl(null);
-  };
 
   const handleSelection = (type: string): void => {
     handleChangePage(null, 0);
@@ -75,10 +67,6 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   const handleUpdateAction = () => {
     handleUpdateInput(selected);
     setSelected([]);
-  };
-
-  const handleHistoryAction = (): void => {
-    alert("viewing text history");
   };
 
   const handleClearAll = () => {

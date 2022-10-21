@@ -14,7 +14,7 @@ import { userValidationSchema } from "./userHelpers";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Typography from "@mui/material/Typography";
 import { Divider } from "@mui/material";
-import { useAppSelector } from "../../common/hooks";
+import { useAppSelector } from "../../common/hooks.redux";
 import { selectUsers } from "./usersSlice";
 
 export default function UserDialog() {
