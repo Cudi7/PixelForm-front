@@ -10,7 +10,7 @@ import { useFormik } from "formik";
 import { User } from "../../common/interfaces/user.interface";
 import { useDialog } from "../../contexts/dialog.context";
 import { userApi } from "./usersApi";
-import { userValidationSchema } from "./userValidationSchema";
+import { userValidationSchema } from "./userHelpers";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Typography from "@mui/material/Typography";
 import { Divider } from "@mui/material";
@@ -164,8 +164,13 @@ export default function UserDialog() {
                 value={formik.values.role}
                 onChange={formik.handleChange}
                 error={formik.touched.role && Boolean(formik.errors.role)}
-                helperText={formik.touched.role && formik.errors.role}
+                helperText={
+                  formik.touched.role
+                    ? formik.errors.role
+                    : "not modifiable, testing purposes only"
+                }
                 sx={{ width: "49%" }}
+                disabled
               />
             </div>
             <Divider sx={{ mt: 5 }}>

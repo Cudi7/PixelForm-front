@@ -23,6 +23,8 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { filterItemsList } from "./textHelpers";
 import { useSearch } from "../../contexts/search.context";
 
+import HistoryIcon from "@mui/icons-material/History";
+
 interface EnhancedTableToolbarProps {
   numSelected: number;
   handleDeleteText: (idArray: string[]) => void;
@@ -36,6 +38,8 @@ interface EnhancedTableToolbarProps {
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const { handleUpdateInput } = useDialog();
+  const { clearFilterName } = useSearch();
 
   const {
     numSelected,
@@ -48,10 +52,8 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
     handleChangePage,
   } = props;
 
-  const { handleUpdateInput } = useDialog();
-  const { clearFilterName } = useSearch();
-
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
     setAnchorEl(event.currentTarget);
   };
@@ -73,6 +75,10 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   const handleUpdateAction = () => {
     handleUpdateInput(selected);
     setSelected([]);
+  };
+
+  const handleHistoryAction = (): void => {
+    alert("viewing text history");
   };
 
   const handleClearAll = () => {
@@ -116,6 +122,11 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
       )}
       {numSelected === 1 ? (
         <>
+          <Tooltip title="History">
+            <IconButton onClick={handleHistoryAction}>
+              <HistoryIcon />
+            </IconButton>
+          </Tooltip>
           <Tooltip title="Edit">
             <IconButton onClick={handleUpdateAction}>
               <EditIcon />

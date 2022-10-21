@@ -21,28 +21,7 @@ import { applyUserSortFilter } from "../../common/tableHelpers";
 import SearchNotFound from "../../common/components/SearchNotFound";
 import EnhancedTableToolbar from "./UsersTableToolbar";
 import EnhancedTableHead from "./UsersTableHead";
-
-function createData(
-  _id: string,
-  nombre: string,
-  email: string,
-  role: string,
-  password: string,
-  apellido1?: string,
-  apellido2?: string,
-  telefono?: string
-): User {
-  return {
-    _id,
-    nombre,
-    email,
-    role,
-    password,
-    apellido1,
-    apellido2,
-    telefono,
-  };
-}
+import { categoryColors, createData } from "./userHelpers";
 
 interface UsersTableProps {
   users: User[];
@@ -225,15 +204,7 @@ export default function UsersTable({
                       <TableCell align="right">
                         <Chip
                           label={row.role}
-                          color={
-                            row.role === "evaluador"
-                              ? "primary"
-                              : row.role === "participante"
-                              ? "secondary"
-                              : row.role === "superuser"
-                              ? "success"
-                              : "warning"
-                          }
+                          color={categoryColors(row.role)}
                         />
                       </TableCell>
                       <TableCell align="right">{row.telefono}</TableCell>
@@ -254,7 +225,10 @@ export default function UsersTable({
               <TableBody>
                 <TableRow>
                   <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                    <SearchNotFound searchQuery={filterName} />
+                    <SearchNotFound
+                      searchQuery={filterName}
+                      selectedFilter={selectedFilter}
+                    />
                   </TableCell>
                 </TableRow>
               </TableBody>

@@ -158,7 +158,11 @@ export default function TextDialog() {
               value={formik.values.type}
               onChange={formik.handleChange}
               error={formik.touched.type && Boolean(formik.errors.type)}
-              helperText={formik.touched.type && formik.errors.type}
+              helperText={
+                formik.touched.type
+                  ? formik.errors.type
+                  : "not modifiable, testing purposes only"
+              }
               disabled
             />
           </DialogContent>

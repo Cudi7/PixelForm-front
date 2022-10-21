@@ -24,21 +24,7 @@ import EnhancedTableToolbar from "./TextTableToolbar";
 import { useSearch } from "../../contexts/search.context";
 import SearchNotFound from "../../common/components/SearchNotFound";
 import { Chip } from "@mui/material";
-import { categoryColors } from "./textHelpers";
-
-function createData(
-  _id: string,
-  title: string,
-  description: string,
-  type: string
-): Text {
-  return {
-    _id,
-    title,
-    description,
-    type,
-  };
-}
+import { categoryColors, createData } from "./textHelpers";
 
 interface TextsTableProps {
   texts: Text[];
@@ -83,7 +69,6 @@ export default function TextsTable({
   };
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.checked);
     if (event.target.checked) {
       const newSelected = filteredTexts.map((n) => n._id);
       setSelected(newSelected);

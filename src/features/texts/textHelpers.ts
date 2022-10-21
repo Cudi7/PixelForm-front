@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { Text } from "../../common/interfaces/text.interface";
 
 const textValidationSchema = yup.object({
   type: yup.string().required("Type is required"),
@@ -41,4 +42,11 @@ const filterItemsList = [
   "cooking",
 ];
 
-export { textValidationSchema, categoryColors, filterItemsList };
+const createData = (
+  _id: string,
+  title: string,
+  description: string,
+  type: string
+): Text => ({ _id, title, description, type });
+
+export { textValidationSchema, categoryColors, filterItemsList, createData };
