@@ -31,7 +31,7 @@ hgfh
 
 ## Installation
 
-`cd` in folders front and back and execute, in each folder:
+`cd` in folder and execute:
 
 ```bash
 npm install

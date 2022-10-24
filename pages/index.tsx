@@ -5,8 +5,6 @@ import Box from "@mui/material/Box";
 import Link from "../src/Link";
 import ProTip from "../src/ProTip";
 import Copyright from "../src/Copyright";
-import { DialogProvider } from "../src/contexts/dialog.context";
-import { EXPORT_DETAIL } from "next/dist/shared/lib/constants";
 
 const Home: NextPage = () => {
   return (
@@ -23,7 +21,7 @@ const Home: NextPage = () => {
         <Typography variant="h4" component="h1" gutterBottom>
           MUI v5 + Next.js with TypeScript example
         </Typography>
-        <Link href="/users" color="secondary">
+        {/* <Link href="/users" color="secondary">
           Go to the users page
         </Link>
 
@@ -32,7 +30,7 @@ const Home: NextPage = () => {
         </Link>
         <Link href="/about" color="secondary">
           Go to the about page
-        </Link>
+        </Link> */}
         <ProTip />
         <Copyright />
       </Box>

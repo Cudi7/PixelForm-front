@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Text } from "../../common/interfaces/text.interface";
 
-const baseUrl = "http://localhost:5000/api";
+const baseUrl = "https://pixelformback.onrender.com/api";
 
 export const textApi = createApi({
   reducerPath: "textsApi",
