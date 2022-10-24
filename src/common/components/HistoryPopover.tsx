@@ -15,6 +15,10 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
+import SendIcon from "@mui/icons-material/Send";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import PersonIcon from "@mui/icons-material/Person";
+import AccountTreeIcon from "@mui/icons-material/AccountTree";
 
 const style = {
   width: "100%",
@@ -49,9 +53,9 @@ export default function BasicPopover({
   const handleHistoryAction = (selected: (string | undefined)[]) => {
     const user = users?.find((el: User) => el._id === selected[0]);
 
-    console.log(user?.history);
+    const sortedArray = [...user?.history];
 
-    setCurrentHistoryDaya(user?.history);
+    setCurrentHistoryDaya(sortedArray?.reverse());
   };
 
   const open = Boolean(anchorEl);
@@ -76,11 +80,35 @@ export default function BasicPopover({
         }}
       >
         <List sx={style} component="nav" aria-label="mailbox folders">
-          {currentHistoryData?.map((el) => (
-            //   <Typography key={el._id} sx={{ p: 2 }}>
-            //     {JSON.stringify(el)}
-            //   </Typography>
+          {currentHistoryData?.map((el, index) => (
             <>
+              {index === 0 && (
+                <Typography
+                  variant="overline"
+                  display="block"
+                  gutterBottom
+                  sx={{
+                    textAlign: "center",
+                    backgroundColor: "rgba(144, 238, 144, 0.1)",
+                  }}
+                >
+                  Last modification
+                </Typography>
+              )}
+              {index === 1 && (
+                <Typography
+                  variant="overline"
+                  display="block"
+                  gutterBottom
+                  sx={{
+                    textAlign: "center",
+                    backgroundColor: "rgba(255, 0, 0, 0.1)",
+                  }}
+                >
+                  Older modifications
+                </Typography>
+              )}
+
               <ListItem
                 button
                 disableTouchRipple
@@ -90,14 +118,29 @@ export default function BasicPopover({
                   alignItems: "start",
                 }}
               >
-                <ListItemText
-                  primary="Modificado por"
-                  secondary={el.modificadoPor}
-                />
-                <ListItemText primary="Fecha" secondary={el.date} />
-                <ListItemText primary="Action" secondary={el.action} />
+                <span
+                  style={{ display: "flex", gap: 20, alignItems: "center" }}
+                >
+                  <PersonIcon />
+                  <ListItemText
+                    primary="Modificado por"
+                    secondary={el.modificadoPor}
+                  />
+                </span>
+                <span
+                  style={{ display: "flex", gap: 20, alignItems: "center" }}
+                >
+                  <CalendarMonthIcon />
+                  <ListItemText primary="Fecha" secondary={el.date} />
+                </span>
+                <span
+                  style={{ display: "flex", gap: 20, alignItems: "center" }}
+                >
+                  <AccountTreeIcon />
+                  <ListItemText primary="Action" secondary={el.action} />
+                </span>
               </ListItem>
-              <Divider />
+              {index !== 0 && <Divider />}
             </>
           ))}
         </List>
