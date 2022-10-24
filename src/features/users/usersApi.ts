@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { User } from "../../common/interfaces/user.interface";
 
-const baseUrl = "https://pixelformback.onrender.com/api";
+const baseUrl = "http://localhost:5000/api";
 
 export const userApi = createApi({
   reducerPath: "userApi",

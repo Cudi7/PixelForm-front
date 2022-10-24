@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { selectUsers } from "../features/users/usersSlice";
+import { useAppSelector } from "./hooks.redux";
+import { User } from "./interfaces/user.interface";
 
 const useTableToolbarController = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -10,15 +13,10 @@ const useTableToolbarController = () => {
   };
   const handleClose = (): void => setAnchorEl(null);
 
-  const handleHistoryAction = (): void => {
-    alert("viewing text history");
-  };
-
   return {
     anchorEl,
     handleClick,
     handleClose,
-    handleHistoryAction,
     open,
   };
 };

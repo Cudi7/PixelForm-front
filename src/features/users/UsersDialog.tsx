@@ -14,11 +14,19 @@ import { userValidationSchema } from "./userHelpers";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Typography from "@mui/material/Typography";
 import { Divider } from "@mui/material";
-import { useAppSelector } from "../../common/hooks.redux";
-import { selectUsers } from "./usersSlice";
+import { useAppDispatch, useAppSelector } from "../../common/hooks.redux";
+import {
+  historyActionRecorded,
+  recordHistoryAction,
+  selectUsers,
+} from "./usersSlice";
+import { date } from "yup";
 
 export default function UserDialog() {
   const [loadingAction, setLoadingAction] = React.useState(false);
+
+  const dispatch = useAppDispatch();
+  const currentUserLoggedIn = "Mariana Ríos";
 
   const [addUser] = userApi.useAddUserMutation();
   const [updateUser] = userApi.useUpdateUserMutation();
@@ -75,7 +83,13 @@ export default function UserDialog() {
 
   const handleUpdateUser = React.useCallback(
     (user: User) => {
-      updateUser(user)
+      updateUser({
+        ...user,
+        history: {
+          modificadoPor: currentUserLoggedIn,
+          action: "User data updated yey!!",
+        },
+      })
         .unwrap()
         .then(() => {
           setLoadingAction(false);

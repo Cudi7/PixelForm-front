@@ -15,6 +15,13 @@ export interface User {
   role: string;
   date?: string;
   type?: string;
+  history?: [
+    {
+      modificadoPor: string;
+      date: Date;
+      action: string;
+    }
+  ];
 }
 
 export interface UserHeadCell {

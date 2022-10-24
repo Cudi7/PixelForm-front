@@ -22,6 +22,7 @@ import { useSearch } from "../../contexts/search.context";
 import HistoryIcon from "@mui/icons-material/History";
 import { useTableToolbarController } from "../hooks.tableToolbar";
 import { Text } from "../interfaces/text.interface";
+import HistoryPopover from "./HistoryPopover";
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
@@ -110,11 +111,14 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
       )}
       {numSelected === 1 ? (
         <>
-          <Tooltip title="History">
-            <IconButton onClick={handleHistoryAction}>
+          {/* <Tooltip title="History">
+            <IconButton onClick={() => handleHistoryClick(selected)}>
               <HistoryIcon />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
+
+          <HistoryPopover selected={selected} />
+
           <Tooltip title="Edit">
             <IconButton onClick={handleUpdateAction}>
               <EditIcon />
