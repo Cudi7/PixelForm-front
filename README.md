@@ -4,7 +4,7 @@
 
 The why is simple, I wanted to refresh my full stack skills building a short but concise app using all the stack that you will read below.
 
-After this little training I'm going to execute something bigger, I will build an Amazon Clone, check it out!
+After this little training I'm going to execute something bigger, I will build an Amazon Clone, <a href="https://github.com/Cudi7/Amazon-clone">check it out!</a>
 
 ## Stack
 
