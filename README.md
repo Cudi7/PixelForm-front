@@ -42,7 +42,3 @@ npm install
 ```bash
 npm run dev or npm run start
 ```
-
-## What's next?
-
-This has been a project that I used to refresh some
