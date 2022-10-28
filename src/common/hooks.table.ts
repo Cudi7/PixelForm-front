@@ -37,8 +37,8 @@ const useTableController = () => {
     event: React.ChangeEvent<HTMLInputElement>,
     filteredData: (string | undefined | Text | User)[]
   ) => {
-    if (event.target.checked) {
-      const newSelected = filteredData.map((n) => n?._id);
+    if (event.target.checked && typeof filteredData !== "string") {
+      const newSelected = filteredData.map((n) => n?._id!);
       setSelected(newSelected);
       return;
     }

@@ -19,22 +19,10 @@ export const textsSlice = createSlice({
     listFetched: (state, action: PayloadAction<Text[]>) => {
       state.list = action.payload;
     },
-    // byIdFetched: (state, action: PayloadAction<User>) => {
-    //   state.mutationUser = action.payload;
-    // },
-    // updated: (state, action: PayloadAction<User>) => {
-    //   state.mutationUser = action.payload;
-    // },
-    // deleted: (state, action) => {
-    //   state.mutationUser = action.payload;
-    // },
   },
 });
 
-export const {
-  listFetched,
-  // byIdFetched, updated, deleted
-} = textsSlice.actions;
+export const { listFetched } = textsSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 

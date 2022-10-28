@@ -4,6 +4,7 @@ export interface Text {
   title: string;
   description: string;
   date?: string;
+  _type?: "text";
 }
 
 export interface TextHeadCell {

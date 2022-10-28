@@ -9,7 +9,7 @@ import { selectUsers } from "../features/users/usersSlice";
 const useDialogController = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [selectedInput, setSelectedInput] = useState<User | Text | undefined>();
+  const [selectedInput, setSelectedInput] = useState<User | Text | null>(null);
   const [statusMessage, setStatusMessage] = useState<string>("");
   const [statusType, setStatusType] = useState<AlertColor | undefined>(
     undefined
@@ -23,8 +23,12 @@ const useDialogController = () => {
   };
   const handleClose = () => {
     setIsOpen(false);
-    setSelectedInput(undefined);
+    setSelectedInput(null);
     setIsUpdating(false);
+  };
+
+  const handleSelectedInput = (type: User | Text): void => {
+    setSelectedInput(type);
   };
 
   const handleUpdateInput = (input: (string | undefined)[]) => {
@@ -66,7 +70,7 @@ const useDialogController = () => {
 const DialogContext = createContext<ReturnType<typeof useDialogController>>({
   isOpen: false,
   isUpdating: false,
-  selectedInput: undefined,
+  selectedInput: User | Text | null,
   handleUpdateInput: (input: (string | undefined)[]) => {},
   handleClickOpen: () => {},
   handleClose: () => {},

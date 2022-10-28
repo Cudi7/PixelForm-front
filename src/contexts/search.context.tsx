@@ -7,9 +7,7 @@ const useSearchController = () => {
     setFilterName(e.target.value);
   };
 
-  const clearFilterName = () => {
-    setFilterName("");
-  };
+  const clearFilterName = () => setFilterName("");
 
   return {
     filterName,

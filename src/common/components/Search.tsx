@@ -52,7 +52,7 @@ export default function Search() {
 
   return (
     <SearchElement>
-      {filterName && (
+      {filterName ? (
         <IconButton
           aria-label="clear search button"
           component="label"
@@ -61,7 +61,7 @@ export default function Search() {
         >
           <ClearIcon />
         </IconButton>
-      )}
+      ) : null}
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>

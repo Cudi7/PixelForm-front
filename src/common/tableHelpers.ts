@@ -2,12 +2,10 @@ import { User } from "./interfaces/user.interface";
 import { Text } from "./interfaces/text.interface";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
+  if (b[orderBy] < a[orderBy]) return -1;
+
+  if (b[orderBy] > a[orderBy]) return 1;
+
   return 0;
 }
 

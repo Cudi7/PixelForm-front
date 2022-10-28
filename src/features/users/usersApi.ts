@@ -1,14 +1,17 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { User } from "../../common/interfaces/user.interface";
 
-const baseUrl = "http://localhost:5000/api";
+const baseUrl = "https://pixelformback.onrender.com/api";
 
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({ baseUrl }),
   tagTypes: ["Users"],
   endpoints: (builder) => ({
-    getAll: builder.query<User[], void>({
+    getAll: builder.query<
+      { success: boolean; users: User[]; status: number },
+      void
+    >({
       query: () => `/users`,
       providesTags: [{ type: "Users", id: "LIST" }],
     }),
@@ -22,7 +25,7 @@ export const userApi = createApi({
       },
       invalidatesTags: [{ type: "Users", id: "LIST" }],
     }),
-    deleteUsers: builder.mutation<string[], User>({
+    deleteUsers: builder.mutation<string[], string[]>({
       query(idArray: string[]) {
         return {
           url: `users/delete`,

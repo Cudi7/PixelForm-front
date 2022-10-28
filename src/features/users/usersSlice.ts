@@ -50,15 +50,8 @@ export const {
   // byIdFetched, updated, deleted
 } = usersSlice.actions;
 
-export const recordHistoryAction = (data: historyTest) => (dispatch) => {
-  dispatch({ type: historyActionRecorded.type, payload: data });
-};
-
 // Other code such as selectors can use the imported `RootState` type
 
 export const selectUsers = (state: RootState) => state.users.list;
-
-export const selectedMutationUser = (state: RootState) =>
-  state.users.mutationUser;
 
 export default usersSlice.reducer;

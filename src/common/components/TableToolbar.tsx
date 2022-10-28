@@ -19,19 +19,20 @@ import MenuItem from "@mui/material/MenuItem";
 import Badge from "@mui/material/Badge";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useSearch } from "../../contexts/search.context";
-import HistoryIcon from "@mui/icons-material/History";
 import { useTableToolbarController } from "../hooks.tableToolbar";
 import { Text } from "../interfaces/text.interface";
-import HistoryPopover from "./HistoryPopover";
+import { User } from "../interfaces/user.interface";
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
-  handleDeleteText: (idArray: string[]) => void;
+  handleDeleteUser: (idArray: (string | undefined)[]) => void;
   selected: (string | undefined)[];
-  setSelected: React.Dispatch<React.SetStateAction<readonly string[]>>;
+  setSelected: () => void;
   handleSelectedFilter: (type: string) => void;
   selectedFilter: string;
-  setOrderBy: React.Dispatch<React.SetStateAction<"" | keyof Text>>;
+  setOrderBy: React.Dispatch<
+    React.SetStateAction<"" | keyof Text | keyof User>
+  >;
   handleChangePage: (event: unknown, newPage: number) => void;
   filterItemsList: string[];
 }
@@ -39,12 +40,12 @@ interface EnhancedTableToolbarProps {
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   const { handleUpdateInput } = useDialog();
   const { clearFilterName } = useSearch();
-  const { anchorEl, handleClick, handleClose, handleHistoryAction, open } =
+  const { anchorEl, handleClick, handleClose, open } =
     useTableToolbarController();
 
   const {
     numSelected,
-    handleDeleteText,
+    handleDeleteUser,
     selected,
     setSelected,
     handleSelectedFilter,
@@ -61,7 +62,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   };
 
   const handleDeleteAction = () => {
-    handleDeleteText(selected);
+    handleDeleteUser(selected);
     setSelected([]);
   };
 
@@ -111,14 +112,6 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
       )}
       {numSelected === 1 ? (
         <>
-          {/* <Tooltip title="History">
-            <IconButton onClick={() => handleHistoryClick(selected)}>
-              <HistoryIcon />
-            </IconButton>
-          </Tooltip> */}
-
-          <HistoryPopover selected={selected} />
-
           <Tooltip title="Edit">
             <IconButton onClick={handleUpdateAction}>
               <EditIcon />

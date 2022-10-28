@@ -1,36 +1,26 @@
-import * as React from "react";
+import { useState, useCallback } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useFormik } from "formik";
-import { User } from "../../common/interfaces/user.interface";
 import { useDialog } from "../../contexts/dialog.context";
 import { userApi } from "./usersApi";
 import { userValidationSchema } from "./userHelpers";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Typography from "@mui/material/Typography";
 import { Divider } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../common/hooks.redux";
-import {
-  historyActionRecorded,
-  recordHistoryAction,
-  selectUsers,
-} from "./usersSlice";
-import { date } from "yup";
+import { User } from "../../common/interfaces/user.interface";
 
 export default function UserDialog() {
-  const [loadingAction, setLoadingAction] = React.useState(false);
+  const [loadingAction, setLoadingAction] = useState(false);
 
-  const dispatch = useAppDispatch();
   const currentUserLoggedIn = "Mariana Ríos";
 
   const [addUser] = userApi.useAddUserMutation();
   const [updateUser] = userApi.useUpdateUserMutation();
-  const users: User[] = useAppSelector(selectUsers);
 
   const {
     selectedInput,
@@ -60,7 +50,7 @@ export default function UserDialog() {
     enableReinitialize: true,
   });
 
-  const handleNewUser = React.useCallback(
+  const handleNewUser = useCallback(
     (newUser: User) => {
       addUser(newUser)
         .unwrap()
@@ -78,16 +68,16 @@ export default function UserDialog() {
           handleClose();
         });
     },
-    [addUser]
+    [addUser, formik, handleClose, handleStatusMessage, handleStatusType]
   );
 
-  const handleUpdateUser = React.useCallback(
+  const handleUpdateUser = useCallback(
     (user: User) => {
       updateUser({
         ...user,
         history: {
           modificadoPor: currentUserLoggedIn,
-          action: "User data updated yey!!",
+          action: "User data updated",
         },
       })
         .unwrap()
@@ -106,7 +96,7 @@ export default function UserDialog() {
           handleClose();
         });
     },
-    [updateUser]
+    [formik, handleClose, handleStatusMessage, handleStatusType, updateUser]
   );
 
   return (

@@ -60,7 +60,7 @@ export default function TextDialog() {
           handleClose();
         });
     },
-    [addText]
+    [addText, formik, handleClose, handleStatusMessage, handleStatusType]
   );
 
   const handleUpdateText = React.useCallback(
@@ -82,7 +82,7 @@ export default function TextDialog() {
           handleClose();
         });
     },
-    [updateText]
+    [formik, handleClose, handleStatusMessage, handleStatusType, updateText]
   );
 
   // const textTextMockApi = async () => {
@@ -106,7 +106,6 @@ export default function TextDialog() {
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen} sx={{ mb: 1 }}>
-        {/* <Button variant="outlined" onClick={textTextMockApi} sx={{ mb: 1 }}> */}
         New Text
       </Button>
       <Dialog open={isOpen} onClose={handleClose}>

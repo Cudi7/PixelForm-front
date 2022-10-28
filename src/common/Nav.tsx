@@ -15,8 +15,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import HomeIcon from "@mui/icons-material/Home";
 import GroupIcon from "@mui/icons-material/Group";
 import TextFieldsIcon from "@mui/icons-material/TextFields";
@@ -96,13 +94,7 @@ const Drawer = styled(MuiDrawer, {
 
 export default function Nav({ children }: { children: React.ReactNode }) {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-
-  console.log("page render outside effect");
-
-  React.useEffect(() => {
-    console.log("page render inside effect");
-  }, []);
+  const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = (): void => setOpen(true);
   const handleDrawerClose = (): void => setOpen(false);
@@ -174,8 +166,12 @@ export default function Nav({ children }: { children: React.ReactNode }) {
           ))}
         </List>
         <Divider />
-        <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
+        {/* <List>
+          {[
+            { title: "Forms", link: "/forms", icon: <DynamicFormIcon /> },
+            { title: "Campaigns", link: "/campaigns", icon: <CampaignIcon /> },
+            { title: "Config", link: "/config", icon: <SettingsIcon /> },
+          ].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 sx={{
@@ -183,6 +179,8 @@ export default function Nav({ children }: { children: React.ReactNode }) {
                   justifyContent: open ? "initial" : "center",
                   px: 2.5,
                 }}
+                component={Link}
+                href={text.link}
               >
                 <ListItemIcon
                   sx={{
@@ -191,13 +189,16 @@ export default function Nav({ children }: { children: React.ReactNode }) {
                     justifyContent: "center",
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {text.icon}
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText
+                  primary={text.title}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
               </ListItemButton>
             </ListItem>
           ))}
-        </List>
+        </List> */}
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />

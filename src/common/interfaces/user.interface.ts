@@ -15,6 +15,7 @@ export interface User {
   role: string;
   date?: string;
   type?: string;
+  _type?: "user";
   history?: [
     {
       modificadoPor: string;

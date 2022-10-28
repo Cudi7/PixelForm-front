@@ -1,8 +1,10 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import { userApi } from "../features/users/usersApi";
 import { textApi } from "../features/texts/textsApi";
+
 import usersReducer from "../features/users/usersSlice";
 import textsReducer from "../features/texts/textsSlice";
+
 import { setupListeners } from "@reduxjs/toolkit/query";
 
 export const store = configureStore({

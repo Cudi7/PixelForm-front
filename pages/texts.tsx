@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useCallback } from "react";
 import type { NextPage } from "next";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -34,18 +34,18 @@ const Texts: NextPage = () => {
   const { statusMessage, statusType, handleStatusMessage, handleStatusType } =
     useDialog();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (data?.texts) {
       dispatch(listFetched(data.texts));
     }
-  }, [data]);
+  }, [data, dispatch]);
 
   if (error) {
     handleStatusMessage(JSON.stringify(error, null, 1));
     handleStatusType("error");
   }
 
-  const handleDeleteText = React.useCallback(
+  const handleDeleteText = useCallback(
     (idArray: string[]) => {
       deleteTexts(idArray)
         .unwrap()
@@ -58,7 +58,7 @@ const Texts: NextPage = () => {
           handleStatusType("error");
         });
     },
-    [deleteTexts]
+    [deleteTexts, handleStatusMessage, handleStatusType]
   );
 
   return (
@@ -83,15 +83,15 @@ const Texts: NextPage = () => {
             severity={statusType}
           />
 
-          {data?.texts && (
+          {data?.texts ? (
             <SearchProvider>
               <TextsTable
                 texts={data?.texts}
                 handleDeleteText={handleDeleteText}
               />
             </SearchProvider>
-          )}
-          {isLoading && <CircularProgress />}
+          ) : null}
+          {isLoading ? <CircularProgress sx={{ margin: 20 }} /> : null}
         </div>
         <Box maxWidth="sm">
           <Button variant="contained" component={Link} noLinkStyle href="/">

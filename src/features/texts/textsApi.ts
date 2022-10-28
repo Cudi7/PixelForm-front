@@ -8,7 +8,10 @@ export const textApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl }),
   tagTypes: ["Texts"],
   endpoints: (builder) => ({
-    getAll: builder.query<Text[], void>({
+    getAll: builder.query<
+      { success: boolean; texts: Text[]; status: number },
+      void
+    >({
       query: () => `/texts`,
       providesTags: [{ type: "Texts", id: "LIST" }],
     }),
@@ -22,7 +25,7 @@ export const textApi = createApi({
       },
       invalidatesTags: [{ type: "Texts", id: "LIST" }],
     }),
-    deleteTexts: builder.mutation<string[], Text>({
+    deleteTexts: builder.mutation<string[], string[]>({
       query(idArray: string[]) {
         return {
           url: `texts/delete`,

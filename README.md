@@ -12,9 +12,11 @@ In this app I used:
 - Redux Toolkit with RTK Query
 - Usual hooks, plus, useContext, useCallback and useMemo
 - Formik + Yup
-- React testing library and Jest
+- React testing library and Jest (no testing yet)
 
 ### Back
+
+<a href="https://github.com/Cudi7/PixelForm-back">link</a>
 
 - Typescript
 - NodeJS

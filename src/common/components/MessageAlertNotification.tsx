@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState, useCallback } from "react";
 import Box from "@mui/material/Box";
 import Alert, { AlertColor } from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
@@ -16,29 +16,28 @@ export default function MessageAlertNotification({
   severity,
   message,
 }: MessageAlertNotificationProps) {
-  const [open, setOpen] = React.useState(false);
-  let intervalId: ReturnType<typeof setTimeout>;
+  const [open, setOpen] = useState(false);
 
   const { statusMessage, statusType, handleStatusMessage, handleStatusType } =
     useDialog();
 
-  React.useEffect(() => {
-    if (statusMessage.length && statusType.length) {
+  const handleClose = useCallback(() => {
+    setOpen(false);
+    handleStatusMessage("");
+    handleStatusType(undefined);
+  }, [handleStatusMessage, handleStatusType]);
+
+  useEffect(() => {
+    if (statusMessage.length && statusType?.length) {
       setOpen(true);
+
       if (open) {
-        intervalId = setTimeout(() => {
+        setTimeout(() => {
           handleClose();
         }, 10000);
       }
     }
-  }, [statusMessage, statusType, open]);
-
-  const handleClose = () => {
-    clearTimeout(intervalId);
-    setOpen(false);
-    handleStatusMessage("");
-    handleStatusType("");
-  };
+  }, [statusMessage, statusType, open, handleClose]);
 
   return severity && message ? (
     <Box

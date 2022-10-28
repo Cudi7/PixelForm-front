@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 // material
 import { Paper, Typography } from "@mui/material";
-import { useSearch } from "../../contexts/search.context";
 
 // ----------------------------------------------------------------------
 
