@@ -1,5 +1,11 @@
 # Next.js with TypeScript (Users and Texts App)
 
+## Why?
+
+The why is simple, I wanted to refresh my full stack skills building a short but concise app using all the stack that you will read below.
+
+After this little training I'm going to execute something bigger, I will build an Amazon Clone, check it out!
+
 ## Stack
 
 In this app I used:
@@ -14,22 +20,16 @@ In this app I used:
 - Formik + Yup
 - React testing library and Jest (no testing yet)
 
-### Back
-
-<a href="https://github.com/Cudi7/PixelForm-back">link</a>
+### <a href="https://github.com/Cudi7/PixelForm-back">Back</a>
 
 - Typescript
 - NodeJS
 - Express
 - MongoDB
 
-## Components
-
-hgfh
-
 ## What can you do?
 
-hgfh
+Add, update, delete, delete many, search, filter, sort
 
 ## Installation
 
@@ -39,34 +39,10 @@ hgfh
 npm install
 ```
 
-## Usage
-
-```python
-import foobar
-
-# returns 'words'
-foobar.pluralize('word')
-
-# returns 'geese'
-foobar.pluralize('goose')
-
-# returns 'phenomenon'
-foobar.singularize('phenomena')
+```bash
+npm run dev or npm run start
 ```
-
-## Contributing
-
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
 
 ## What's next?
 
-<!-- #default-branch-switch -->
-
-You now have a working example project.
-You can head back to the documentation, continuing browsing it from the [templates](https://mui.com/material-ui/getting-started/templates/) section.
+This has been a project that I used to refresh some
